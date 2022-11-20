@@ -68,22 +68,7 @@ def receber_hora():
     return jsonify(relogio_clientes)
 
 
-@app.route('/relogio/<int:id>', methods=['PUT'])
-def atualizar_hora(id):
-    tempo = request.get_json()
-    for indice, relogio in enumerate(relogio_clientes):
-        if relogio.get('id') == id:
-            hora = str(tempo['hora'])
-            horas.append(int(hora.split(':')[0]))
-            minutos.append(int(hora.split(':')[1]))
-            segundos.append(int(hora.split(':')[2]))
-            relogio_clientes[indice].update(tempo)
-            return jsonify(relogio_clientes[indice])
-
-
 def calcular():
-
-
     relogio = timedelta(
         hours=int(np.average(horas)),
         minutes=int(np.average(minuto)),
@@ -97,9 +82,9 @@ def servidor(rel):
     for indice, relogio in enumerate(relogio_clientes):
         if relogio.get('id') == rel.get('id'):
             relogio_clientes[indice].update(rel)
-    for indice, relogio in enumerate(relogio_clientes):
-        if relogio.get('id') == 0:
-            relogio_clientes[0]['hora'] = rel.get('hora')
+        else:
+            if relogio.get('id') == 0:
+                relogio_clientes[0]['hora'] = rel.get('hora')
 
 
 if __name__ == "__main__":

@@ -4,11 +4,12 @@ from datetime import timedelta
 import requests
 
 id = 4
-relogio_servidor = timedelta(hours=0, minutes=0, seconds=random.randrange(0, 59))
+
+relogio = timedelta(hours=0, minutes=0, seconds=random.randrange(0, 59))
 
 params = {
     'id': int(id),
-    'hora': str(relogio_servidor)
+    'hora': str(relogio)
 }
 
 
@@ -16,14 +17,18 @@ def main():
     requests.post('http://127.0.0.1:5000/relogio/', json=params)
     while True:
         try:
-            # requests.put(f'http://127.0.0.1:5000/relogio/{id}')
-            print(f"Sua hora atual é {params['hora']}\n")
+            print(f"Sua hora atual é {params}\n")
             r = requests.get(f'http://127.0.0.1:5000/relogio/{id}')
             data = r.json()
             params.update(data)
-            print(params)
+            print(f'Sua Hora atualizada é {params}\n')
             time.sleep(3)
         except:
+            p = {
+                'id': int(id),
+                'hora': str(relogio)
+            }
+            params.update(p)
             requests.post('http://127.0.0.1:5000/relogio/', json=params)
 
 
