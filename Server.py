@@ -15,19 +15,19 @@ relogio_servidor = timedelta(hours=hora, minutes=minuto, seconds=segundo)
 relogio_sicronizado = []
 
 horas = []
-minuto = []
-segundo = []
+minutos = []
+segundos = []
 
 s = relogio_servidor
 server = str(s)
 horas.append(int(server.split(':')[0]))
-minuto.append(int(server.split(':')[1]))
-segundo.append(int(server.split(':')[2]))
+minutos.append(int(server.split(':')[1]))
+segundos.append(int(server.split(':')[2]))
 
 relogio_clientes = [
     {
         'id': 0,
-        'hora': '',
+        'hora': str(relogio_servidor),
     }
 ]
 
@@ -35,7 +35,6 @@ relogio_clientes = [
 @app.route('/relogio', methods=['GET'])
 def obter_relogio():
     return jsonify(relogio_clientes)
-
 
 @app.route('/relogio/<int:id>', methods=['GET'])
 def att_relogio(id):
@@ -54,6 +53,7 @@ def att_relogio(id):
                     'id': hora.get('id'),
                     'hora': str(relogio_atual)
                 }
+                servidor(rel)
                 return jsonify(rel)
 
 
@@ -62,8 +62,8 @@ def receber_hora():
     tempo = request.get_json()
     hora = str(tempo['hora'])
     horas.append(int(hora.split(':')[0]))
-    minuto.append(int(hora.split(':')[0]))
-    segundo.append(int(hora.split(':')[0]))
+    minutos.append(int(hora.split(':')[1]))
+    segundos.append(int(hora.split(':')[2]))
     relogio_clientes.append(tempo)
     return jsonify(relogio_clientes)
 
@@ -75,19 +75,32 @@ def atualizar_hora(id):
         if relogio.get('id') == id:
             hora = str(tempo['hora'])
             horas.append(int(hora.split(':')[0]))
-            minuto.append(int(hora.split(':')[0]))
-            segundo.append(int(hora.split(':')[0]))
+            minutos.append(int(hora.split(':')[1]))
+            segundos.append(int(hora.split(':')[2]))
             relogio_clientes[indice].update(tempo)
             return jsonify(relogio_clientes[indice])
 
 
 def calcular():
+
+
     relogio = timedelta(
         hours=int(np.average(horas)),
         minutes=int(np.average(minuto)),
         seconds=int(np.average(segundo)))
+
     relogio_sicronizado.append(relogio)
     print(relogio_sicronizado[-1])
+
+
+def servidor(rel):
+    for indice, relogio in enumerate(relogio_clientes):
+        if relogio.get('id') == rel.get('id'):
+            relogio_clientes[indice].update(rel)
+    for indice, relogio in enumerate(relogio_clientes):
+        if relogio.get('id') == 0:
+            relogio_clientes[0]['hora'] = rel.get('hora')
+
 
 if __name__ == "__main__":
     print('Servidor executando...')
