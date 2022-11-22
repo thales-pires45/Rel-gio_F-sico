@@ -3,9 +3,9 @@ import time
 from datetime import timedelta
 import requests
 
-id = 4
+id = 1
 
-relogio = timedelta(hours=0, minutes=0, seconds=random.randrange(0, 59))
+relogio = timedelta(hours=random.randrange(0,24), minutes=random.randrange(0,59), seconds=random.randrange(0,59))
 
 params = {
     'id': int(id),

@@ -3,6 +3,7 @@ from flask import jsonify, request
 from datetime import datetime, timedelta
 import numpy as np
 
+
 app = Flask(__name__)
 
 horarioAtual = datetime.now()
@@ -18,8 +19,7 @@ horas = []
 minutos = []
 segundos = []
 
-s = relogio_servidor
-server = str(s)
+server = str(relogio_servidor)
 horas.append(int(server.split(':')[0]))
 minutos.append(int(server.split(':')[1]))
 segundos.append(int(server.split(':')[2]))
@@ -69,10 +69,11 @@ def receber_hora():
 
 
 def calcular():
+    print(f'{horas}:{minutos}:{segundos}')
     relogio = timedelta(
-        hours=int(np.average(horas)),
-        minutes=int(np.average(minuto)),
-        seconds=int(np.average(segundo)))
+        hours=(np.average(horas)),
+        minutes=(np.average(minutos)),
+        seconds=(np.average(segundos)))
 
     relogio_sicronizado.append(relogio)
     print(relogio_sicronizado[-1])
