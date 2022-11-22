@@ -45,13 +45,9 @@ def att_relogio(id):
             if str(relogio_sicronizado[-1]) == str(time):
                 return jsonify(hora)
             else:
-                server = str(relogio_sicronizado[-1])
-                relogio_atual = timedelta(hours=(int(server.split(':')[0])),
-                                          minutes=(int(server.split(':')[1])),
-                                          seconds=(int(server.split(':')[2])))
                 rel = {
                     'id': hora.get('id'),
-                    'hora': str(relogio_atual)
+                    'hora': str(relogio_sicronizado[-1])
                 }
                 servidor(rel)
                 return jsonify(rel)

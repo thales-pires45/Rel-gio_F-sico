@@ -3,7 +3,7 @@ import time
 from datetime import timedelta
 import requests
 
-id = 1
+id = 0
 
 relogio = timedelta(hours=random.randrange(0,24), minutes=random.randrange(0,59), seconds=random.randrange(0,59))
 
